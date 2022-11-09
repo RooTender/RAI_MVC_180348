@@ -14,12 +14,22 @@
 
         private string _password;
 
-        public UserViewModel(string userName, string password, Roles role, List<string> friends)
+        public UserViewModel(string userName, string password, Roles role = Roles.Default)
         {
             UserName = userName;
             _password = password;
+            
+            Friends = new List<string>();
             Role = role;
+        }
+
+        public UserViewModel(string userName, string password, List<string> friends, Roles role = Roles.Default)
+        {
+            UserName = userName;
+            _password = password;
+            
             Friends = friends;
+            Role = role;
         }
 
         public void AddFriend(string friendName)
