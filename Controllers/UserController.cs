@@ -5,7 +5,7 @@ namespace RAI_MVC_180348.Controllers
 {
     public class UserController : Controller
     {
-        private static List<UserViewModel> _users = new();
+        public static List<UserViewModel> Users = new();
 
         public IActionResult Add()
         {
@@ -19,8 +19,8 @@ namespace RAI_MVC_180348.Controllers
 
         public IActionResult Del(string username)
         {
-            var userToDelete = _users.Single(x => x.UserName == username);
-            _users.Remove(userToDelete);
+            var userToDelete = Users.Single(x => x.UserName == username);
+            Users.Remove(userToDelete);
 
             return RedirectToAction("List");
         }
