@@ -14,6 +14,11 @@ namespace RAI_MVC_180348.Controllers
 
         public IActionResult Add()
         {
+            if (LoggedIn != "admin")
+            {
+                return Json("Unauthorized!");
+            }
+
             return View();
         }
 
@@ -30,11 +35,21 @@ namespace RAI_MVC_180348.Controllers
 
         public IActionResult List()
         {
+            if (LoggedIn != "admin")
+            {
+                return Json("Unauthorized!");
+            }
+
             return View(Users);
         }
 
         public IActionResult Del(string username)
         {
+            if (LoggedIn != "admin")
+            {
+                return Json("Unauthorized!");
+            }
+
             var userToDelete = Users.Single(x => x.UserName == username);
             Users.Remove(userToDelete);
 
