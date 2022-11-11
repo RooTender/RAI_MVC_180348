@@ -10,4 +10,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Friends\Import.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Friends\Import.cshtml" />
+  </ItemGroup>
+
 </Project>

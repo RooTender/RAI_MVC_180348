@@ -17,6 +17,17 @@ namespace RAI_MVC_180348.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Add([FromForm (Name="login")]string login)
+        {
+            if (!Users.Exists(x => x.UserName == login))
+            {
+                Users.Add(new UserViewModel(login, new List<string>()));
+            }
+
+            return RedirectToAction("List");
+        }
+
         public IActionResult List()
         {
             return View(Users);

@@ -9,10 +9,13 @@ namespace RAI_MVC_180348.Controllers
     {
         public IActionResult Index()
         {
-            return RedirectToAction("List");
+            if (LoggedIn == null) return Json("User is not logged in!");
+
+            return View(Users.Single(x => x.UserName == LoggedIn));
         }
 
-        public IActionResult Add(string login)
+        [HttpPost]
+        public IActionResult Add([FromForm(Name="login")]string login)
         {
             if (LoggedIn == null || !Users.Exists(x => x.UserName == login))
             {
@@ -47,14 +50,36 @@ namespace RAI_MVC_180348.Controllers
 
             return LoggedIn == null
                 ? File(new UTF8Encoding().GetBytes("The user was not logged in!"), "text/csv", filename)
-                : File(new UTF8Encoding().GetBytes(Users.Single(x => x.UserName == LoggedIn).Friends.ToString() ?? string.Empty), "text/csv", filename);
+                : File(new UTF8Encoding().GetBytes(Users.Single(x => x.UserName == LoggedIn)
+                    .Friends
+                    .Aggregate((a, b) => a + '\n' + b)), "text/csv", filename);
+        }
+
+        public ActionResult Import()
+        {
+            return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Import(IFormFile upload)
+        public ActionResult Import([FromForm (Name="fileWithData")]IFormFile uploadedFile)
         {
-            return Json(true);
+            if (LoggedIn == null) return Json("User is not logged in! I don't know to whom import friends list!");
+
+            var userToAddFriends = Users.Single(x => x.UserName == LoggedIn);
+
+            using var streamReader = new StreamReader(uploadedFile.OpenReadStream());
+            while (streamReader.Peek() >= 0)
+            {
+                var friend = streamReader.ReadLine();
+                if (friend == null) continue;
+
+                if (!userToAddFriends.Friends.Contains(friend))
+                {
+                    userToAddFriends.Friends.Add(friend);
+                }
+            }
+
+            return RedirectToAction("Index"); 
         }
     }
 }
