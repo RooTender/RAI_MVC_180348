@@ -28,15 +28,5 @@ namespace RAI_MVC_180348.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        public IActionResult Login(string login)
-        {
-            if (UserController.Users.Exists(x => x.UserName == login))
-            {
-                UserController.LoggedIn = login;
-            }
-
-            return RedirectToAction("Index", "Friends");
-        }
     }
 }
