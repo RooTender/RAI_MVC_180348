@@ -1,5 +1,48 @@
-﻿@{
+﻿@model IEnumerable<RAI_MVC_180348.Models.UserViewModel>
+
+@{
     ViewBag.Title = "Users list";
 }
 
-<h2>title</h2>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>List</title>
+</head>
+<body>
+    <p>
+        <a asp-action="Add">Add new user</a>
+    </p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberFrom)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberFrom)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { username=item.UserName })
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</body>
+</html>

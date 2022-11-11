@@ -1,11 +1,5 @@
 ﻿namespace RAI_MVC_180348.Models
 {
-    public enum Roles
-    {
-        Default = 0,
-        Admin
-    }
-
     public class UserViewModel
     {
         public string UserName { get; }

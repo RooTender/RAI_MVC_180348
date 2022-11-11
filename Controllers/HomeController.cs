@@ -18,26 +18,6 @@ namespace RAI_MVC_180348.Controllers
             return View();
         }
 
-        public IActionResult Init()
-        {
-            if (UserController.Users.Any())
-            {
-                return RedirectToAction("List", "User");
-            }
-
-            const int maxUsers = 6;
-            for (var i = 0; i < maxUsers; ++i)
-            {
-                UserController.Users.Add(new($"User{i}", new List<string>
-                {
-                    $"User{(i + 1) % maxUsers}",
-                    $"User{(i + 2) % maxUsers}",
-                }));
-            }
-
-            return RedirectToAction("List", "User");
-        }
-
         public IActionResult Privacy()
         {
             return View();
@@ -47,6 +27,16 @@ namespace RAI_MVC_180348.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Login(string login)
+        {
+            if (UserController.Users.Exists(x => x.UserName == login))
+            {
+                UserController.LoggedIn = login;
+            }
+
+            return RedirectToAction("Index", "Friends");
         }
     }
 }

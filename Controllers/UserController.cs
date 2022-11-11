@@ -5,7 +5,12 @@ namespace RAI_MVC_180348.Controllers
 {
     public class UserController : Controller
     {
-        public static List<UserViewModel> Users = new();
+        public static List<UserViewModel> Users = new()
+        {
+            new UserViewModel("admin", new List<string>()),
+        };
+        public static string? LoggedIn { get; set; }
+
 
         public IActionResult Add()
         {
@@ -14,7 +19,7 @@ namespace RAI_MVC_180348.Controllers
 
         public IActionResult List()
         {
-            return View();
+            return View(Users);
         }
 
         public IActionResult Del(string username)
@@ -23,6 +28,19 @@ namespace RAI_MVC_180348.Controllers
             Users.Remove(userToDelete);
 
             return RedirectToAction("List");
+        }
+
+        public IActionResult Delete(string username)
+        {
+            var user = Users.SingleOrDefault(x => x.UserName == username);
+
+            if (user == null)
+            {
+                return RedirectToAction("List");
+            }
+
+            ViewBag.username = username;
+            return View(user);
         }
     }
 }
